@@ -1,63 +1,53 @@
-// 59. WAP to swap Kth node from beginning with Kth node from end in a singly linked list.
-
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node
-{
+struct Node {
     int data;
     struct Node *next;
-} Node;
+};
 
-struct Node *createNode(int data)
-{
-    Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+struct Node *head = NULL;
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->data = data;
     newNode->next = NULL;
     return newNode;
 }
 
-void insertEnd(struct Node **head, int data)
-{
-    Node *newNode = createNode(data);
+void insertEnd(int data) {
+    struct Node *newNode = createNode(data);
 
-    if (*head == NULL)
-    {
-        *head = newNode;
+    if (head == NULL) {
+        head = newNode;
         return;
     }
 
-    Node *temp = *head;
+    struct Node *temp = head;
     while (temp->next != NULL)
         temp = temp->next;
 
     temp->next = newNode;
 }
 
-void display(Node *head)
-{
-    while (head != NULL)
-    {
+void display(struct Node *head) {
+    while (head != NULL) {
         printf("%d ", head->data);
         head = head->next;
     }
     printf("\n");
 }
 
-// Swap kth node from beginning and kth node from end
-void swapKth(struct Node *head, int k)
-{
+void swapKth(int k) {
     int n = 0;
     struct Node *temp = head;
 
-    while (temp != NULL)
-    {
+    while (temp != NULL) {
         n++;
         temp = temp->next;
     }
 
-    if (k <= 0 || k > n)
-    {
+    if (k <= 0 || k > n) {
         printf("Invalid value of k\n");
         return;
     }
@@ -65,17 +55,15 @@ void swapKth(struct Node *head, int k)
     if (2 * k - 1 == n)
         return;
 
-    Node *prev1 = NULL, *curr1 = head;
-    Node *prev2 = NULL, *curr2 = head;
+    struct Node *prev1 = NULL, *curr1 = head;
+    struct Node *prev2 = NULL, *curr2 = head;
 
-    for (int i = 1; i < k; i++)
-    {
+    for (int i = 1; i < k; i++) {
         prev1 = curr1;
         curr1 = curr1->next;
     }
 
-    for (int i = 1; i < n - k + 1; i++)
-    {
+    for (int i = 1; i < n - k + 1; i++) {
         prev2 = curr2;
         curr2 = curr2->next;
     }
@@ -90,24 +78,21 @@ void swapKth(struct Node *head, int k)
     else
         head = curr1;
 
-    Node *tempNext = curr1->next;
+    struct Node *tempNext = curr1->next;
     curr1->next = curr2->next;
     curr2->next = tempNext;
 }
 
-int main()
-{
-    Node *head = NULL;
+int main() {
     int n, data, k;
 
     printf("Enter number of nodes: ");
     scanf("%d", &n);
 
     printf("Enter elements:\n");
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         scanf("%d", &data);
-        insertEnd(&head, data);
+        insertEnd(data);
     }
 
     printf("Enter k: ");
@@ -116,7 +101,7 @@ int main()
     printf("Original list: ");
     display(head);
 
-    swapKth(head, k);
+    swapKth(k);
 
     printf("After swapping: ");
     display(head);
